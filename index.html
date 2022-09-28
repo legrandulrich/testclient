@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head> 
+    <title>Test Client</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"
+        integrity="sha384-KAZ4DtjNhLChOB/hxXuKqhMLYvx3b5MlT55xPEiNmREKRzeEm+RVPlTnAn0ajQNs"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <input type="text" id="message" />
+    <button onclick="envoyerMessage()">Envoyer</button><br />
+    <div id="messages"></div>
+
+    <script>
+        const socket = io('http://localhost:3000');
+
+        const message = document.getElementById('message');
+
+        const messages = document.getElementById('messages');
+
+        socket.on('connect', () => console.log('Connected'));
+
+        socket.on('message', function (id, data) {
+            messages.innerHTML += `<p> ${id} : ${data} </p>`
+        });
+
+        function envoyerMessage() {
+            socket.emit('message', message.value);
+        }
+    </script>
+</body>
+
+</html>
